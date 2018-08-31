@@ -11,7 +11,6 @@ function scrapeItem(el: HTMLElement): Item | null {
 		const availability = el.querySelector('.szallitasi_ido');
 		const imageEl: HTMLImageElement | null = el.querySelector('#list_1h img');
 		if (titleEl && availability && imageEl) {
-			console.log(imageEl.src)
 			const orderable = (availability.textContent || '').indexOf('Nem rendelhető') === -1;
 			const priceToUse = originalPriceEl || normalPriceEl;
 			const language = (titleEl.textContent || '').indexOf('Magyar nyelvű') > -1 ? Language.Hungarian : Language.English;

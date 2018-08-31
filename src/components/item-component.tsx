@@ -1,9 +1,14 @@
 import * as React from 'react';
 import Item from '../Item';
+import styled from 'styled-components'
+
+const Wrapper = styled.div`
+	display: flex;
+`
 
 const ItemComponent = (item: Item) => {
 	return (
-		<div>
+		<Wrapper>
 			<img src={item.image} />
 			<div>{item.vendor}</div>
 			<div>{item.title}</div>
@@ -12,7 +17,7 @@ const ItemComponent = (item: Item) => {
 			<div>{item.language}</div>
 			<div>{item.available}</div>
 			<div>{item.nextAvailable && item.nextAvailable.toDateString()}</div>
-		</div>
+		</Wrapper>
 	)
 }
 
