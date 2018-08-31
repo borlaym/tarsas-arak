@@ -21,7 +21,7 @@ function scrapeItem(el: HTMLElement): Item {
 
 export default async function scraper(query: string): Promise<Item[]> {
 	try {
-		const response = await fetch(`http://localhost:3001/szellemlovas`);
+		const response = await fetch(`http://localhost:3001/szellemlovas/${query}`);
 		const html = await response.text();
 		const el = document.createElement('html');
 		el.innerHTML = html;
