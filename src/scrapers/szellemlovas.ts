@@ -1,22 +1,41 @@
-import Item, { Language } from "../Item";
+import Item, { Language, Vendor } from "../Item";
+import { compact } from 'lodash'
 
-function scrapeItem(el: HTMLElement): Item {
-	const titleEl = el.querySelector('.listcim');
-	const normalPriceEl = el.querySelector('.normalprice');
-	const discountPriceEl = el.querySelector('.discountprice');
-	const availability = el.querySelector('.szallitasi_ido');
-	if (titleEl && availability) {
-		const orderable = (availability.textContent || '').indexOf('Nem rendelhető') === -1;
-		const priceToUse = discountPriceEl || normalPriceEl;
-		const language = (titleEl.textContent || '').indexOf('Magyar nyelvű') > -1 ? Language.Hungarian : Language.English;
-		return {
-			title: titleEl.textContent || '',
-			language,
-			price: orderable && priceToUse ? parseInt(priceToUse.textContent || '', 10) : 0,
-			available: true
+function scrapeItem(el: HTMLElement): Item | null {
+	try {
+
+		const titleEl = el.querySelector('.listcim');
+		const normalPriceEl = el.querySelector('.normalprice');
+		const originalPriceEl = el.querySelector('.originalprice');
+		const discountPriceEl = el.querySelector('.discountprice');
+		const availability = el.querySelector('.szallitasi_ido');
+		const imageEl: HTMLImageElement | null = el.querySelector('#list_1h img');
+		if (titleEl && availability && imageEl) {
+			console.log(imageEl.src)
+			const orderable = (availability.textContent || '').indexOf('Nem rendelhető') === -1;
+			const priceToUse = originalPriceEl || normalPriceEl;
+			const language = (titleEl.textContent || '').indexOf('Magyar nyelvű') > -1 ? Language.Hungarian : Language.English;
+			const nextAvailable = (availability.textContent || '').match(/([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/);
+			return {
+				title: titleEl.textContent || '',
+				language,
+				price: {
+					original: orderable && priceToUse ? parseInt(priceToUse.textContent || '', 10) : 0,
+					discounted: orderable && discountPriceEl ? parseInt(discountPriceEl.textContent || '', 10) : 0
+				},
+				available: true,
+				image: imageEl.src.replace('http://localhost:3000', 'https://www.szellemlovas.hu'),
+				vendor: Vendor.Szellemlovas,
+				nextAvailable: nextAvailable ? new Date(nextAvailable[0]) : null
+			}
 		}
+		console.log('Unable to parse item on Szellemlovas', el);
+		return null
+	} catch (err) {
+		console.log('Unable to parse item on Szellemlovas', el);
+		console.log(err)
+		return null
 	}
-	throw new Error('Unable to parse item on Szellemlovas');
 }
 
 export default async function scraper(query: string): Promise<Item[]> {
@@ -26,7 +45,8 @@ export default async function scraper(query: string): Promise<Item[]> {
 		const el = document.createElement('html');
 		el.innerHTML = html;
 		const entries = el.querySelectorAll('.items .view');
-		return Array.from(entries).map(scrapeItem);
+		const parsed = Array.from(entries).map(scrapeItem);
+		return compact(parsed)
 	} catch (err) {
 		console.log(err);
 		return [];
