@@ -5,7 +5,7 @@ import './index.css';
 import registerServiceWorker from './registerServiceWorker';
 import szellemlovas from './scrapers/szellemlovas';
 
-szellemlovas('scythe');
+szellemlovas('scythe').then(items => console.log(items));
 
 ReactDOM.render(
   <App />,
