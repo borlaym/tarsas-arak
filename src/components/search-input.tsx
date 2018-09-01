@@ -30,8 +30,13 @@ interface Props {
 }
 
 export default class SearchComponent extends React.Component<Props> {
+	private inputEl: React.RefObject<HTMLInputElement>
 	public state = {
 		value: ''
+	}
+	constructor(props: Props) {
+		super(props);
+		this.inputEl = React.createRef()
 	}
 	public handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		this.setState({
@@ -45,12 +50,17 @@ export default class SearchComponent extends React.Component<Props> {
 		if (event.key === 'Enter') {
 			this.props.onSearch(this.state.value)
 		}
-		
+	}
+
+	public componentDidMount() {
+		if (this.inputEl.current) {
+			this.inputEl.current.focus();
+		}
 	}
 	public render() {
 		return (
 			<Wrapper>
-				<Input type="search" value={this.state.value} onChange={this.handleInputChange} onKeyPress={this.handleKeyPress} />
+				<Input innerRef={this.inputEl} type="search" value={this.state.value} onChange={this.handleInputChange} onKeyPress={this.handleKeyPress} />
 				<Button onClick={this.handleClick}>Kereses</Button>
 			</Wrapper>
 		)

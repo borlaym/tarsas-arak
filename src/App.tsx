@@ -20,9 +20,6 @@ class App extends React.Component {
 		waitingOn: []
 	}
 
-	public componentDidMount() {
-		this.startSearch('azul')
-	}
 	public startSearch = (query: string) => {
 		this.setState({
 			waitingOn: Object.keys(Vendor),
