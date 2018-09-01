@@ -10,6 +10,7 @@ const Wrapper = styled.div`
 	padding: 5px;
 	border-bottom: 1px solid lightgrey;
 	background-color: ${(props: { available?: boolean }) => props.available ? 'white' : 'rgba(255, 0, 0, 0.3)'};
+	justify-content: space-between;
 `
 
 const Image = styled.img`
@@ -17,22 +18,23 @@ const Image = styled.img`
 	padding: 0 20px;
 `
 
-const Title = styled.div`
+const Text = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	text-align: center;
 	padding: 0 20px;
+	width: ${(props: { width?: number}) => props.width ? `${props.width}%` : 'auto'};
 `
 
 const ItemComponent = (item: Item) => {
 	return (
 		<Wrapper available={item.available}>
 			<Image src={item.image} />
-			<Title>{item.title}</Title>
+			<Text width={40}>{item.title}</Text>
 			<PriceComponent {...item.price} />
 			<LanguageComponent language={item.language} />
-			<div>{item.nextAvailable && item.nextAvailable.toDateString()}</div>
+			<Text>{item.nextAvailable && item.nextAvailable.toDateString()}</Text>
 			<VendorComponent vendor={item.vendor} />
 		</Wrapper>
 	)
