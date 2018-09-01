@@ -16,20 +16,38 @@ function getPrice(el: Element): { original: number, discounted: number } {
 	}
 }
 
+function getAvailable(el: Element): boolean {
+	const text = el.textContent || ''
+	if (text.indexOf('Készleten') > -1 && text.indexOf('Nincs Készleten') === -1) {
+		return true;
+	}
+	return false
+}
+
+function getNextAvailable(el: Element): string | null {
+	const text = el.textContent || ''
+	console.log(text)
+	if (text.indexOf('Előrendelhető') > -1) {
+		return text;
+	}
+	return null
+}
+
 function scrapeItem(el: HTMLElement): Item | null {
 	try {
 		const titleEl = el.querySelector('.webshop-list-item-name');
 		const priceEl = el.querySelector('h5');
 		const imageEl: HTMLImageElement | null = el.querySelector('.thumbnail img');
-		if (titleEl && imageEl && priceEl) {
+		const availability = el.querySelector('h5 + div');
+		if (titleEl && imageEl && priceEl && availability) {
 			return {
 				title: titleEl.textContent || '',
 				language: Language.LanguageIndependent,
 				price: getPrice(priceEl),
-				available: true,
+				available: getAvailable(availability),
 				image: imageEl.src.replace('http://localhost:3000', 'https://www.metagames.hu'),
 				vendor: Vendor.Metagame,
-				nextAvailable: null
+				nextAvailable: getNextAvailable(availability)
 			}
 		}
 		console.log('Unable to parse item on Metagame', el);
