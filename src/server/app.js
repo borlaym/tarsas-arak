@@ -15,4 +15,14 @@ app.get('/gemklub/:query', function (req, res) {
         .then(function (r) { return r.text(); })
         .then(function (r) { return res.send(r); });
 });
+app.get('/reflexshop/:query', function (req, res) {
+    node_fetch_1["default"]("https://reflexshop.hu/index.php?route=product/list&keyword=" + req.params.query)
+        .then(function (r) { return r.text(); })
+        .then(function (r) { return res.send(r); });
+});
+app.get('/metagame/:query', function (req, res) {
+    node_fetch_1["default"]("https://metagames.hu/webshop?kereses=" + req.params.query)
+        .then(function (r) { return r.text(); })
+        .then(function (r) { return res.send(r); });
+});
 app.listen(3001, function () { return console.log('listening on 3001'); });

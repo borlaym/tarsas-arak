@@ -6,7 +6,9 @@ export enum Language {
 
 export enum Vendor {
 	Szellemlovas,
-	Gemklub
+	Gemklub,
+	Metagame,
+	Reflexshop
 }
 
 interface Item {

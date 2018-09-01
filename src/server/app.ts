@@ -16,4 +16,16 @@ app.get('/gemklub/:query', (req, res) => {
 		.then(r => res.send(r));
 })
 
+app.get('/reflexshop/:query', (req, res) => {
+	fetch(`https://reflexshop.hu/index.php?route=product/list&keyword=${req.params.query}`)
+		.then(r => r.text())
+		.then(r => res.send(r));
+})
+
+app.get('/metagame/:query', (req, res) => {
+	fetch(`https://metagames.hu/webshop?kereses=${req.params.query}`)
+		.then(r => r.text())
+		.then(r => res.send(r));
+})
+
 app.listen(3001, () => console.log('listening on 3001'));

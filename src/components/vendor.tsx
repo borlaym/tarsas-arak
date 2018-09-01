@@ -19,6 +19,11 @@ function getVendorSrc(vendor: Vendor): string {
 			return 'https://www.szellemlovas.hu/tarsasjatekok/images/logo.jpg'
 		case Vendor.Gemklub:
 			return 'https://dqy32rf2htafh.cloudfront.net/skin/frontend/rwd/gemklub/images/logo.gif'
+		case Vendor.Metagame:
+			return 'https://metagames.hu/img/header/logo-big.png'
+		case Vendor.Reflexshop:
+			return 'https://reflexshop.cdn.shoprenter.hu/custom/reflexshop/image/cache/w334h75m00/-%20template%20-/logo.png?v=1470732361'
+
 	}
 }
 
