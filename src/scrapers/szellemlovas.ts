@@ -9,11 +9,12 @@ function scrapeItem(el: HTMLElement): Item | null {
 		const originalPriceEl = el.querySelector('.originalprice');
 		const discountPriceEl = el.querySelector('.discountprice');
 		const availability = el.querySelector('.szallitasi_ido');
+		const details = el.querySelector('#list_3h');
 		const imageEl: HTMLImageElement | null = el.querySelector('#list_1h img');
-		if (titleEl && availability && imageEl) {
+		if (titleEl && availability && imageEl && details) {
 			const orderable = (availability.textContent || '').indexOf('Nem rendelhető') === -1;
 			const priceToUse = originalPriceEl || normalPriceEl;
-			const language = (titleEl.textContent || '').indexOf('Magyar nyelvű') > -1 ? Language.Hungarian : Language.English;
+			const language = (details.textContent || '').indexOf('Magyar nyelvű') > -1 ? Language.Hungarian : Language.English;
 			const nextAvailable = (availability.textContent || '').match(/([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/);
 			return {
 				title: titleEl.textContent || '',

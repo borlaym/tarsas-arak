@@ -3,6 +3,7 @@ import Item from '../Item';
 import styled from 'styled-components'
 import VendorComponent from './vendor';
 import PriceComponent from './price';
+import LanguageComponent from './language';
 
 const Wrapper = styled.div`
 	display: flex;
@@ -30,8 +31,7 @@ const ItemComponent = (item: Item) => {
 			<Image src={item.image} />
 			<Title>{item.title}</Title>
 			<PriceComponent {...item.price} />
-			<div>{item.language}</div>
-			<div>{item.available}</div>
+			<LanguageComponent language={item.language} />
 			<div>{item.nextAvailable && item.nextAvailable.toDateString()}</div>
 			<VendorComponent vendor={item.vendor} />
 		</Wrapper>
