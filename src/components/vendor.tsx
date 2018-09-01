@@ -17,6 +17,8 @@ function getVendorSrc(vendor: Vendor): string {
 	switch (vendor) {
 		case Vendor.Szellemlovas:
 			return 'https://www.szellemlovas.hu/tarsasjatekok/images/logo.jpg'
+		case Vendor.Gemklub:
+			return 'https://dqy32rf2htafh.cloudfront.net/skin/frontend/rwd/gemklub/images/logo.gif'
 	}
 }
 

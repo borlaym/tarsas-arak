@@ -10,4 +10,10 @@ app.get('/szellemlovas/:query', (req, res) => {
 		.then(r => res.send(r));
 })
 
+app.get('/gemklub/:query', (req, res) => {
+	fetch(`https://www.gemklub.hu/catalogsearch/result/?cat=0&q=${req.params.query}`)
+		.then(r => r.text())
+		.then(r => res.send(r));
+})
+
 app.listen(3001, () => console.log('listening on 3001'));

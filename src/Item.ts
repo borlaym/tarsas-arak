@@ -4,7 +4,8 @@ export enum Language {
 }
 
 export enum Vendor {
-	Szellemlovas
+	Szellemlovas,
+	Gemklub
 }
 
 interface Item {
