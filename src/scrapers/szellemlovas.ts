@@ -1,6 +1,35 @@
 import Item, { Language, Vendor } from "../Item";
 import { compact } from 'lodash'
 
+function getAvailable(el: Element): boolean {
+	const text = (el.textContent || '');
+	if (text.indexOf('Nem rendelhető') > -1) {
+		return false;
+	}
+	if (text.indexOf('Azonnal kapható') > -1) {
+		return true;
+	}
+	if (text.indexOf('Várható érkezés') > -1) {
+		return false;
+	}
+	if (text.indexOf('Kikölcsönözve') > -1) {
+		return false;
+	}
+	if (text.indexOf('Előrendelhető') > -1) {
+		return false;
+	}
+	console.log('Not parsed availability on Gemklub: ' + text);
+	return true;
+}
+
+function getNextAvailable(el: Element): string | null {
+	const text = el.textContent || ''
+	if (text.indexOf('Azonnal kapható') > -1) {
+		return null;
+	}
+	return text
+}
+
 function scrapeItem(el: HTMLElement): Item | null {
 	try {
 
@@ -15,7 +44,6 @@ function scrapeItem(el: HTMLElement): Item | null {
 			const orderable = (availability.textContent || '').indexOf('Nem rendelhető') === -1;
 			const priceToUse = originalPriceEl || normalPriceEl;
 			const language = (details.textContent || '').indexOf('Magyar nyelvű') > -1 ? Language.Hungarian : Language.English;
-			const nextAvailable = (availability.textContent || '').match(/([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/);
 			return {
 				title: titleEl.textContent || '',
 				language,
@@ -23,10 +51,10 @@ function scrapeItem(el: HTMLElement): Item | null {
 					original: orderable && priceToUse ? parseInt(priceToUse.textContent || '', 10) : 0,
 					discounted: orderable && discountPriceEl ? parseInt(discountPriceEl.textContent || '', 10) : 0
 				},
-				available: true,
+				available: getAvailable(availability),
 				image: imageEl.src.replace('http://localhost:3000', 'https://www.szellemlovas.hu'),
 				vendor: Vendor.Szellemlovas,
-				nextAvailable: nextAvailable ? new Date(nextAvailable[0]) : null
+				nextAvailable: getNextAvailable(availability)
 			}
 		}
 		console.log('Unable to parse item on Szellemlovas', el);

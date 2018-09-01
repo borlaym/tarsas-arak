@@ -14,6 +14,7 @@ const Wrapper = styled.div`
 
 const Image = styled.img`
 	max-height: 90px;
+	max-width: 90px;
 	padding: 0 20px;
 `
 
@@ -33,7 +34,7 @@ const ItemComponent = (item: Item) => {
 			<Text width={40}>{item.title}</Text>
 			<PriceComponent {...item.price} />
 			<LanguageComponent language={item.language} />
-			<Text>{item.nextAvailable && item.nextAvailable.toDateString()}</Text>
+			<Text>{item.nextAvailable}</Text>
 			<VendorComponent vendor={item.vendor} />
 		</Wrapper>
 	)

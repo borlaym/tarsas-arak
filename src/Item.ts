@@ -20,7 +20,7 @@ interface Item {
 		discounted: number
 	},
 	available: boolean,
-	nextAvailable: Date | null,
+	nextAvailable: string | null,
 	image: string
 }
 
