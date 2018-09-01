@@ -74,8 +74,8 @@ export default async function scraper(query: string): Promise<Item[]> {
 	try {
 		const response = await fetch(`${server}szellemlovas/${query}`);
 		const html = await response.text();
-		const el = document.createElement('html');
-		el.innerHTML = html;
+		const el = document.implementation.createHTMLDocument('virtual')
+		el.write(html)
 		const entries = el.querySelectorAll('.items .view');
 		const parsed = Array.from(entries).map(scrapeItem);
 		return compact(parsed)
