@@ -1,6 +1,8 @@
 import Item, { Language, Vendor } from "../Item";
 import { compact } from 'lodash'
 
+const server = window.location.hostname === 'localhost' ? 'http://localhost:3001/' : 'https://tarsas-kereso.herokuapp.com/';
+
 function getPrice(el: Element): { original: number, discounted: number } {
 	const normalPriceEl = el.querySelector('.saleDetails span');
 	const discountPriceEl = el.querySelector('.sale');
@@ -61,7 +63,7 @@ function scrapeItem(el: HTMLElement): Item | null {
 
 export default async function scraper(query: string): Promise<Item[]> {
 	try {
-		const response = await fetch(`http://localhost:3001/metagame/${query}`);
+		const response = await fetch(`${server}metagame/${query}`);
 		const html = await response.text();
 		const el = document.createElement('html');
 		el.innerHTML = html;

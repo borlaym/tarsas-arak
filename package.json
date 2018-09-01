@@ -22,7 +22,7 @@
 		"test": "react-scripts-ts test --env=jsdom",
 		"eject": "react-scripts-ts eject",
 		"start": "tsc -p server && node build/server/index.js",
-		"server": "tsc -p src/server -inlineSourceMap --watch & nodemon --inspect build/server/index.js"
+		"server": "tsc -p server -inlineSourceMap --watch & nodemon --inspect build/server/index.js"
 	},
 	"devDependencies": {
 		"@types/jest": "^23.3.1",

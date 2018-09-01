@@ -1,6 +1,8 @@
 import Item, { Language, Vendor } from "../Item";
 import { compact } from 'lodash'
 
+const server = window.location.hostname === 'localhost' ? 'http://localhost:3001/' : 'https://tarsas-kereso.herokuapp.com/';
+
 function getAvailable(el: Element): boolean {
 	const text = (el.textContent || '');
 	if (text.indexOf('Nem rendelhető') > -1) {
@@ -70,7 +72,7 @@ function scrapeItem(el: HTMLElement): Item | null {
 
 export default async function scraper(query: string): Promise<Item[]> {
 	try {
-		const response = await fetch(`http://localhost:3001/szellemlovas/${query}`);
+		const response = await fetch(`${server}szellemlovas/${query}`);
 		const html = await response.text();
 		const el = document.createElement('html');
 		el.innerHTML = html;
