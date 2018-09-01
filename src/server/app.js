@@ -5,9 +5,8 @@ var node_fetch_1 = require("node-fetch");
 var cors = require("cors");
 var app = express();
 app.use(cors());
-app.get('/szellemlovas/:searchquery', function (req, res) {
-    console.log(req.params.searchquery);
-    node_fetch_1["default"]("https://www.szellemlovas.hu/tarsasjatekok/index.php?r=webboltTermekValtozat/index&termek_nev=" + req.params.searchquery)
+app.get('/szellemlovas/:query', function (req, res) {
+    node_fetch_1["default"]("https://www.szellemlovas.hu/tarsasjatekok/index.php?r=webboltTermekValtozat/index&termek_nev=" + req.params.query)
         .then(function (r) { return r.text(); })
         .then(function (r) { return res.send(r); });
 });
