@@ -46,10 +46,10 @@ function scrapeItem(el: HTMLElement): Item | null {
 				language: Language.LanguageIndependent,
 				price: getPrice(priceEl),
 				available: getAvailable(availability),
-				image: imageEl.src.replace(window.location.origin, 'https://www.metagames.hu'),
+				image: imageEl.src.replace(window.location.href, 'https://www.metagames.hu/'),
 				vendor: Vendor.Metagame,
 				nextAvailable: getNextAvailable(availability),
-				url: titleEl.href.replace(window.location.origin, 'https://www.metagames.hu')
+				url: titleEl.href.replace(window.location.href, 'https://www.metagames.hu/')
 			}
 		}
 		console.log('Unable to parse item on Metagame', el);
