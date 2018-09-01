@@ -22,7 +22,7 @@ function getVendorSrc(vendor: Vendor): string {
 		case Vendor.Metagame:
 			return 'https://metagames.hu/img/header/logo-big.png'
 		case Vendor.Reflexshop:
-			return 'https://reflexshop.cdn.shoprenter.hu/custom/reflexshop/image/cache/w334h75m00/-%20template%20-/logo.png?v=1470732361'
+			return 'https://scontent.fbud4-1.fna.fbcdn.net/v/t1.0-1/23244435_1971198423146349_3183030814318886329_n.jpg?_nc_cat=0&oh=cf0f3d00df30506c3b3bc6479899e6d9&oe=5BF93D0C'
 
 	}
 }
