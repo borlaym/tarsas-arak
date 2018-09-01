@@ -1,6 +1,7 @@
 export enum Language {
 	Hungarian,
-	English
+	English,
+	LanguageIndependent
 }
 
 export enum Vendor {

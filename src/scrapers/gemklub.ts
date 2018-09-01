@@ -1,18 +1,28 @@
 import Item, { Language, Vendor } from "../Item";
 import { compact } from 'lodash'
 
+function getLanguage(el: Element): Language {
+	if (el.querySelector('img[alt="Magyar nyelvű társasjáték"]')) {
+		return Language.Hungarian
+	} else if (el.querySelector('img[alt="Angol nyelvű társasjáték"]')) {
+		return Language.English
+	}
+	return Language.LanguageIndependent
+}
+
 function scrapeItem(el: HTMLElement): Item | null {
 	try {
 		const titleEl = el.querySelector('.prod-name');
-		const normalPriceEl = el.querySelector('.normal-price');
+		const normalPriceEl = el.querySelector('.normal-price .price');
 		const details = el.querySelector('.product-icons');
 		const imageEl: HTMLImageElement | null = el.querySelector('.picture-container img');
 		if (titleEl && imageEl && details && normalPriceEl) {
+			const priceTextContent = normalPriceEl.textContent || ''
 			return {
 				title: titleEl.textContent || '',
-				language: Language.English,
+				language: getLanguage(details),
 				price: {
-					original: parseInt(normalPriceEl.textContent || '', 10),
+					original: parseInt(priceTextContent.replace('&nbsp;', '').replace(' ', ''), 10),
 					discounted: 0
 				},
 				available: true,

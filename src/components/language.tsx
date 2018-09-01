@@ -9,19 +9,22 @@ const Wrapper = styled.div`
 	padding: 0 20px;
 `
 
-function getFlagSrc(language: Language) {
+function getFlagSrc(language: Language): string | null {
 	switch (language) {
 		case Language.Hungarian:
 			return 'https://dqy32rf2htafh.cloudfront.net/skin/frontend/base/default/images/product_icons/sm/ikon_magyar-feljesztesu-tarsasjatek.png'
 		case Language.English:
 			return 'https://dqy32rf2htafh.cloudfront.net/media/product_language/english.jpg'
+		case Language.LanguageIndependent:
+			return null
 	}
 }
 
 export default function LanguageComponent(props: { language: Language }) {
+	const flagSrc = getFlagSrc(props.language)
 	return (
 		<Wrapper>
-			<img src={getFlagSrc(props.language)} />
+			{flagSrc ? <img src={flagSrc} /> : <div />}
 		</Wrapper>
 	)
 
