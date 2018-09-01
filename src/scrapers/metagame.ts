@@ -34,7 +34,7 @@ function getNextAvailable(el: Element): string | null {
 
 function scrapeItem(el: HTMLElement): Item | null {
 	try {
-		const titleEl = el.querySelector('.webshop-list-item-name');
+		const titleEl: HTMLAnchorElement | null = el.querySelector('.webshop-list-item-name a');
 		const priceEl = el.querySelector('h5');
 		const imageEl: HTMLImageElement | null = el.querySelector('.thumbnail img');
 		const availability = el.querySelector('h5 + div');
@@ -46,7 +46,8 @@ function scrapeItem(el: HTMLElement): Item | null {
 				available: getAvailable(availability),
 				image: imageEl.src.replace('http://localhost:3000', 'https://www.metagames.hu'),
 				vendor: Vendor.Metagame,
-				nextAvailable: getNextAvailable(availability)
+				nextAvailable: getNextAvailable(availability),
+				url: titleEl.href.replace('http://localhost:3000', 'https://www.metagames.hu')
 			}
 		}
 		console.log('Unable to parse item on Metagame', el);

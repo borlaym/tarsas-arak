@@ -3,7 +3,7 @@ import { compact } from 'lodash'
 
 function scrapeItem(el: HTMLElement): Item | null {
 	try {
-		const titleEl = el.querySelector('.list-productname-link');
+		const titleEl: HTMLAnchorElement | null = el.querySelector('a.list-productname-link');
 		const normalPriceEl = el.querySelector('.list_price');
 		const imageEl: HTMLImageElement | null = el.querySelector('.img-thumbnail-link img');
 		if (titleEl && imageEl && normalPriceEl) {
@@ -18,7 +18,8 @@ function scrapeItem(el: HTMLElement): Item | null {
 				available: true,
 				image: imageEl.dataset && imageEl.dataset.src || '',
 				vendor: Vendor.Reflexshop,
-				nextAvailable: null
+				nextAvailable: null,
+				url: titleEl.href
 			}
 		}
 		console.log('Unable to parse item on Reflexshop', el);

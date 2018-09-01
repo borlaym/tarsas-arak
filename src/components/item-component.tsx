@@ -31,7 +31,7 @@ const ItemComponent = (item: Item) => {
 	return (
 		<Wrapper available={item.available}>
 			<Image src={item.image} />
-			<Text width={40}>{item.title}</Text>
+			<Text width={40}><a href={item.url}>{item.title}</a></Text>
 			<PriceComponent {...item.price} />
 			<LanguageComponent language={item.language} />
 			<Text>{item.nextAvailable}</Text>

@@ -34,13 +34,14 @@ function scrapeItem(el: HTMLElement): Item | null {
 	try {
 
 		const titleEl = el.querySelector('.listcim');
+		const linkEl: HTMLAnchorElement | null = el.querySelector('.listcim a');
 		const normalPriceEl = el.querySelector('.normalprice');
 		const originalPriceEl = el.querySelector('.originalprice');
 		const discountPriceEl = el.querySelector('.discountprice');
 		const availability = el.querySelector('.szallitasi_ido');
 		const details = el.querySelector('#list_3h');
 		const imageEl: HTMLImageElement | null = el.querySelector('#list_1h img');
-		if (titleEl && availability && imageEl && details) {
+		if (titleEl && availability && imageEl && details && linkEl) {
 			const orderable = (availability.textContent || '').indexOf('Nem rendelhető') === -1;
 			const priceToUse = originalPriceEl || normalPriceEl;
 			const language = (details.textContent || '').indexOf('Magyar nyelvű') > -1 ? Language.Hungarian : Language.English;
@@ -54,7 +55,8 @@ function scrapeItem(el: HTMLElement): Item | null {
 				available: getAvailable(availability),
 				image: imageEl.src.replace('http://localhost:3000', 'https://www.szellemlovas.hu'),
 				vendor: Vendor.Szellemlovas,
-				nextAvailable: getNextAvailable(availability)
+				nextAvailable: getNextAvailable(availability),
+				url: linkEl.href.replace('http://localhost:3000', 'https://www.szellemlovas.hu')
 			}
 		}
 		console.log('Unable to parse item on Szellemlovas', el);

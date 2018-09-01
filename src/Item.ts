@@ -21,7 +21,8 @@ interface Item {
 	},
 	available: boolean,
 	nextAvailable: string | null,
-	image: string
+	image: string,
+	url: string
 }
 
 export default Item;

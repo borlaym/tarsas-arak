@@ -32,7 +32,8 @@ function scrapeItem(el: HTMLElement): Item | null {
 		const normalPriceEl = el.querySelector('.normal-price .price');
 		const details = el.querySelector('.product-icons');
 		const imageEl: HTMLImageElement | null = el.querySelector('.picture-container img');
-		if (titleEl && imageEl && details && normalPriceEl) {
+		const linkEl: HTMLAnchorElement | null = el.querySelector('.prod-name a');
+		if (titleEl && imageEl && details && normalPriceEl && linkEl) {
 			const priceTextContent = normalPriceEl.textContent || ''
 			return {
 				title: titleEl.textContent || '',
@@ -44,7 +45,8 @@ function scrapeItem(el: HTMLElement): Item | null {
 				available: getAvailable(details),
 				image: imageEl.src,
 				vendor: Vendor.Gemklub,
-				nextAvailable: getNextAvailable(details)
+				nextAvailable: getNextAvailable(details),
+				url: linkEl.href
 			}
 		}
 		console.log('Unable to parse item on Gemklub', el);
