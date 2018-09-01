@@ -25,7 +25,8 @@ class App extends React.Component {
 		this.setState({
 			szellemlovas: [],
 			gemklub: [],
-			reflexshop: []
+			reflexshop: [],
+			metagame: []
 		}, () => {
 			szellemlovas(query).then(items => this.setState({ szellemlovas: items }))
 			gemklub(query).then(items => this.setState({ gemklub: items }))

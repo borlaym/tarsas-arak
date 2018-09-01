@@ -41,10 +41,16 @@ export default class SearchComponent extends React.Component<Props> {
 	public handleClick = (event: React.MouseEvent) => {
 		this.props.onSearch(this.state.value)
 	}
+	public handleKeyPress = (event: React.KeyboardEvent) => {
+		if (event.key === 'Enter') {
+			this.props.onSearch(this.state.value)
+		}
+		
+	}
 	public render() {
 		return (
 			<Wrapper>
-				<Input type="search" value={this.state.value} onChange={this.handleInputChange} />
+				<Input type="search" value={this.state.value} onChange={this.handleInputChange} onKeyPress={this.handleKeyPress} />
 				<Button onClick={this.handleClick}>Kereses</Button>
 			</Wrapper>
 		)
