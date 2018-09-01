@@ -46,6 +46,10 @@ export default async function scraper(query: string): Promise<Item[]> {
 		const html = await response.text();
 		const el = document.createElement('html');
 		el.innerHTML = html;
+		const notice = el.querySelector('.note-msg');
+		if (notice) {
+			return [];
+		}
 		const entries = el.querySelectorAll('.category-products .product-item');
 		const parsed = Array.from(entries).map(scrapeItem);
 		return compact(parsed)
