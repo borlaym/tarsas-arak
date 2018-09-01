@@ -2,7 +2,6 @@ import Item, { Language, Vendor } from "../Item";
 import { compact } from 'lodash'
 
 const server = window.location.hostname === 'localhost' ? 'http://localhost:3001/' : 'https://tarsas-kereso.herokuapp.com/';
-const client = window.location.hostname === 'localhost' ? 'http://localhost:3001/' : 'https://borlaym.github.io/tarsas-arak/';
 
 function getAvailable(el: Element): boolean {
 	const text = (el.textContent || '');
@@ -48,6 +47,10 @@ function scrapeItem(el: HTMLElement): Item | null {
 			const orderable = (availability.textContent || '').indexOf('Nem rendelhető') === -1;
 			const priceToUse = originalPriceEl || normalPriceEl;
 			const language = (details.textContent || '').indexOf('Magyar nyelvű') > -1 ? Language.Hungarian : Language.English;
+			const imageSrc = new URL(imageEl.src);
+			imageSrc.hostname = 'szellemlovas.hu';
+			const url = new URL(linkEl.href);
+			url.hostname = 'szellemlovas.hu';
 			return {
 				title: titleEl.textContent || '',
 				language,
@@ -56,10 +59,10 @@ function scrapeItem(el: HTMLElement): Item | null {
 					discounted: orderable && discountPriceEl ? parseInt(discountPriceEl.textContent || '', 10) : 0
 				},
 				available: getAvailable(availability),
-				image: imageEl.src.replace(client, 'https://www.szellemlovas.hu'),
+				image: imageSrc.href,
 				vendor: Vendor.Szellemlovas,
 				nextAvailable: getNextAvailable(availability),
-				url: linkEl.href.replace(client, 'https://www.szellemlovas.hu')
+				url: url.href
 			}
 		}
 		console.log('Unable to parse item on Szellemlovas', el);
