@@ -26,7 +26,6 @@ function getAvailable(el: Element): boolean {
 
 function getNextAvailable(el: Element): string | null {
 	const text = el.textContent || ''
-	console.log(text)
 	if (text.indexOf('Előrendelhető') > -1) {
 		return text;
 	}

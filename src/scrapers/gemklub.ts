@@ -10,6 +10,22 @@ function getLanguage(el: Element): Language {
 	return Language.LanguageIndependent
 }
 
+function getAvailable(el: Element): boolean {
+	const span = el.querySelector('span');
+	if (span && span.title && span.title.indexOf('Azonnal') === 0) {
+		return true
+	}
+	return false
+}
+
+function getNextAvailable(el: Element): string | null {
+	const span = el.querySelector('span');
+	if (span && span.title && span.title.indexOf('Azonnal') === -1 && span.title.indexOf('Előrendelés') === -1) {
+		return span.title
+	}
+	return null
+}
+
 function scrapeItem(el: HTMLElement): Item | null {
 	try {
 		const titleEl = el.querySelector('.prod-name');
@@ -25,10 +41,10 @@ function scrapeItem(el: HTMLElement): Item | null {
 					original: parseInt(priceTextContent.replace('&nbsp;', '').replace(' ', ''), 10),
 					discounted: 0
 				},
-				available: true,
+				available: getAvailable(details),
 				image: imageEl.src,
 				vendor: Vendor.Gemklub,
-				nextAvailable: null
+				nextAvailable: getNextAvailable(details)
 			}
 		}
 		console.log('Unable to parse item on Gemklub', el);
