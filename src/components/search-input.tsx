@@ -51,6 +51,11 @@ export default class SearchComponent extends React.Component<Props> {
 			this.props.onSearch(this.state.value)
 		}
 	}
+	public handleFocus = () => {
+		this.setState({
+			value: ''
+		})
+	}
 
 	public componentDidMount() {
 		if (this.inputEl.current) {
@@ -60,7 +65,14 @@ export default class SearchComponent extends React.Component<Props> {
 	public render() {
 		return (
 			<Wrapper>
-				<Input innerRef={this.inputEl} type="search" value={this.state.value} onChange={this.handleInputChange} onKeyPress={this.handleKeyPress} />
+				<Input
+					innerRef={this.inputEl}
+					type="search"
+					value={this.state.value}
+					onChange={this.handleInputChange}
+					onKeyPress={this.handleKeyPress}
+					onFocus={this.handleFocus}
+				/>
 				<Button onClick={this.handleClick}>Kereses</Button>
 			</Wrapper>
 		)
