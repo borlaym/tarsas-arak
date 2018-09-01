@@ -5,10 +5,10 @@ export enum Language {
 }
 
 export enum Vendor {
-	Szellemlovas,
-	Gemklub,
-	Metagame,
-	Reflexshop
+	Szellemlovas = 'Szellemlovas',
+	Gemklub = 'Gemklub',
+	Metagame = 'Metagame',
+	Reflexshop = 'Reflexshop'
 }
 
 interface Item {

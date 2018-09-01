@@ -4,47 +4,47 @@ import gemklub from './scrapers/gemklub';
 import reflexshop from './scrapers/reflexshop';
 import metagame from './scrapers/metagame';
 import ItemComponent from './components/item-component';
-import Item from './Item';
+import Item, { Vendor } from './Item';
 import SearchComponent from './components/search-input';
+
+const enumToParser = {
+	Szellemlovas: szellemlovas,
+	Gemklub: gemklub,
+	Reflexshop: reflexshop,
+	Metagame: metagame
+}
 
 class App extends React.Component {
 	public state = {
-		szellemlovas: [],
-		gemklub: [],
-		reflexshop: [],
-		metagame: []
+		results: [],
+		waitingOn: []
 	}
-	
+
 	public componentDidMount() {
-		szellemlovas('azul').then(items => this.setState({ szellemlovas: items }));
-		gemklub('azul').then(items => this.setState({ gemklub: items }));
-		reflexshop('azul').then(items => this.setState({ reflexshop: items }));
-		metagame('azul').then(items => this.setState({ metagame: items }));
+		this.startSearch('azul')
 	}
 	public startSearch = (query: string) => {
 		this.setState({
-			szellemlovas: [],
-			gemklub: [],
-			reflexshop: [],
-			metagame: []
+			waitingOn: Object.keys(Vendor),
+			results: []
 		}, () => {
-			szellemlovas(query).then(items => this.setState({ szellemlovas: items }))
-			gemklub(query).then(items => this.setState({ gemklub: items }))
-			reflexshop(query).then(items => this.setState({ reflexshop: items }))
-			metagame(query).then(items => this.setState({ metagame: items }))
+			Object.keys(Vendor).map((vendor: string) => {
+				const parser = enumToParser[vendor]
+				parser(query).then((items: Item[]) => this.setState({
+					results: [...this.state.results, ...items],
+					waitingOn: this.state.waitingOn.filter(v => v !== vendor)
+				}))
+			})
 		})
 	}
 	public render() {
-		const allItems = [
-			...this.state.szellemlovas,
-			...this.state.gemklub,
-			...this.state.reflexshop,
-			...this.state.metagame
-		]
 		return (
 			<div>
 				<SearchComponent onSearch={this.startSearch} />
-				{allItems.map((item: Item, index: number) => <ItemComponent key={index} {...item} />)}
+				{this.state.waitingOn.length > 0 && (<div>
+					Toltes: {this.state.waitingOn.join(', ')}
+				</div>)}
+				{this.state.results.map((item: Item, index: number) => <ItemComponent key={index} {...item} />)}
 			</div>
 		);
 	}
