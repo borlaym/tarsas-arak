@@ -2,6 +2,7 @@ import Item, { Language, Vendor } from "../Item";
 import { compact } from 'lodash'
 
 const server = window.location.hostname === 'localhost' ? 'http://localhost:3001/' : 'https://tarsas-kereso.herokuapp.com/';
+const client = window.location.hostname === 'localhost' ? 'http://localhost:3001/' : 'https://borlaym.github.io/tarsas-arak/';
 
 function getPrice(el: Element): { original: number, discounted: number } {
 	const normalPriceEl = el.querySelector('.saleDetails span');
@@ -46,10 +47,10 @@ function scrapeItem(el: HTMLElement): Item | null {
 				language: Language.LanguageIndependent,
 				price: getPrice(priceEl),
 				available: getAvailable(availability),
-				image: imageEl.src.replace(server, 'https://www.metagames.hu'),
+				image: imageEl.src.replace(client, 'https://www.metagames.hu'),
 				vendor: Vendor.Metagame,
 				nextAvailable: getNextAvailable(availability),
-				url: titleEl.href.replace(server, 'https://www.metagames.hu')
+				url: titleEl.href.replace(client, 'https://www.metagames.hu')
 			}
 		}
 		console.log('Unable to parse item on Metagame', el);
