@@ -55,10 +55,10 @@ function scrapeItem(el: HTMLElement): Item | null {
 					discounted: orderable && discountPriceEl ? parseInt(discountPriceEl.textContent || '', 10) : 0
 				},
 				available: getAvailable(availability),
-				image: imageEl.src.replace(window.location.href, 'https://www.szellemlovas.hu/'),
+				image: imageEl.src.replace(window.location.origin, 'https://www.szellemlovas.hu'),
 				vendor: Vendor.Szellemlovas,
 				nextAvailable: getNextAvailable(availability),
-				url: linkEl.href.replace(window.location.href, 'https://www.szellemlovas.hu/')
+				url: linkEl.href.replace(window.location.origin, 'https://www.szellemlovas.hu')
 			}
 		}
 		console.log('Unable to parse item on Szellemlovas', el);
