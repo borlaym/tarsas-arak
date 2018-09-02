@@ -1,7 +1,5 @@
 import Item, { Language, Vendor } from "../Item";
-import { compact } from 'lodash'
-
-const server = window.location.hostname === 'localhost' ? 'http://localhost:3001/' : 'https://tarsas-kereso.herokuapp.com/';
+import Scraper from "./Scraper";
 
 function getPrice(el: Element): { original: number, discounted: number } {
 	const normalPriceEl = el.querySelector('.saleDetails span');
@@ -34,44 +32,36 @@ function getNextAvailable(el: Element): string | null {
 	return null
 }
 
-function scrapeItem(el: HTMLElement): Item | null {
-	try {
-		const titleEl: HTMLAnchorElement | null = el.querySelector('.webshop-list-item-name a');
-		const priceEl = el.querySelector('h5');
-		const imageEl: HTMLImageElement | null = el.querySelector('.thumbnail img');
-		const availability = el.querySelector('h5 + div');
-		if (titleEl && imageEl && priceEl && availability) {
-			return {
-				title: titleEl.textContent || '',
-				language: Language.LanguageIndependent,
-				price: getPrice(priceEl),
-				available: getAvailable(availability),
-				image: imageEl.src.replace(window.location.href, 'https://www.metagames.hu/'),
-				vendor: Vendor.Metagame,
-				nextAvailable: getNextAvailable(availability),
-				url: titleEl.href.replace(window.location.href, 'https://www.metagames.hu/')
+class MetagameScraper extends Scraper {
+	public vendor = Vendor.Metagame;
+	protected itemSelector = '.webshop-products-panel .card.webshop-list-item';
+	protected parseItem(el: HTMLElement): Item | null {
+		try {
+			const titleEl: HTMLAnchorElement | null = el.querySelector('.webshop-list-item-name a');
+			const priceEl = el.querySelector('h5');
+			const imageEl: HTMLImageElement | null = el.querySelector('.thumbnail img');
+			const availability = el.querySelector('h5 + div');
+			if (titleEl && imageEl && priceEl && availability) {
+				return {
+					title: titleEl.textContent || '',
+					language: Language.LanguageIndependent,
+					price: getPrice(priceEl),
+					available: getAvailable(availability),
+					image: imageEl.src.replace(window.location.href, 'https://www.metagames.hu/'),
+					vendor: Vendor.Metagame,
+					nextAvailable: getNextAvailable(availability),
+					url: titleEl.href.replace(window.location.href, 'https://www.metagames.hu/')
+				}
 			}
+			console.log('Unable to parse item on Metagame', el);
+			return null
+		} catch (err) {
+			console.log('Unable to parse item on Metagame', el);
+			console.log(err)
+			return null
 		}
-		console.log('Unable to parse item on Metagame', el);
-		return null
-	} catch (err) {
-		console.log('Unable to parse item on Metagame', el);
-		console.log(err)
-		return null
 	}
 }
 
-export default async function scraper(query: string): Promise<Item[]> {
-	try {
-		const response = await fetch(`${server}metagame/${query}`);
-		const html = await response.text();
-		const el = document.implementation.createHTMLDocument('virtual')
-		el.write(html)
-		const entries = el.querySelectorAll('.webshop-products-panel .card.webshop-list-item');
-		const parsed = Array.from(entries).map(scrapeItem);
-		return compact(parsed)
-	} catch (err) {
-		console.log(err);
-		return [];
-	}
-}
+const instance = new MetagameScraper()
+export default instance

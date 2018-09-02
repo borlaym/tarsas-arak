@@ -9,7 +9,7 @@ import ItemComponent from './components/item-component';
 import Item, { Vendor } from './Item';
 import SearchComponent from './components/search-input';
 
-const enumToParser = {
+const enumToScraper = {
 	Szellemlovas: szellemlovas,
 	Gemklub: gemklub,
 	Reflexshop: reflexshop,
@@ -30,8 +30,8 @@ class App extends React.Component {
 			results: []
 		}, () => {
 			Object.keys(Vendor).map((vendor: string) => {
-				const parser = enumToParser[vendor]
-				parser(query).then((items: Item[]) => this.setState({
+				const scraper = enumToScraper[vendor]
+				scraper.search(query).then((items: Item[]) => this.setState({
 					results: [...this.state.results, ...items],
 					waitingOn: this.state.waitingOn.filter(v => v !== vendor)
 				}))

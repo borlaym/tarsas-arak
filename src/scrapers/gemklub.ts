@@ -1,7 +1,5 @@
 import Item, { Language, Vendor } from "../Item";
-import { compact } from 'lodash'
-
-const server = window.location.hostname === 'localhost' ? 'http://localhost:3001/' : 'https://tarsas-kereso.herokuapp.com/';
+import Scraper from "./Scraper";
 
 function getLanguage(el: Element): Language {
 	if (el.querySelector('img[alt="Magyar nyelvű társasjáték"]')) {
@@ -28,53 +26,48 @@ function getNextAvailable(el: Element): string | null {
 	return null
 }
 
-function scrapeItem(el: HTMLElement): Item | null {
-	try {
-		const titleEl = el.querySelector('.prod-name');
-		const normalPriceEl = el.querySelector('.normal-price .price');
-		const details = el.querySelector('.product-icons');
-		const imageEl: HTMLImageElement | null = el.querySelector('.picture-container img');
-		const linkEl: HTMLAnchorElement | null = el.querySelector('.prod-name a');
-		if (titleEl && imageEl && details && normalPriceEl && linkEl) {
-			const priceTextContent = normalPriceEl.textContent || ''
-			return {
-				title: titleEl.textContent || '',
-				language: getLanguage(details),
-				price: {
-					original: parseInt(priceTextContent.replace('&nbsp;', '').replace(' ', ''), 10),
-					discounted: 0
-				},
-				available: getAvailable(details),
-				image: imageEl.src,
-				vendor: Vendor.Gemklub,
-				nextAvailable: getNextAvailable(details),
-				url: linkEl.href
-			}
+class GemklubScraper extends Scraper {
+	public vendor = Vendor.Gemklub;
+	protected itemSelector = '.category-products .product-item';
+	protected shouldParsePage(el: Document) {
+		const notice = el.querySelector('.note-msg');
+		if (notice) {
+			return false;
 		}
-		console.log('Unable to parse item on Gemklub', el);
-		return null
-	} catch (err) {
-		console.log('Unable to parse item on Gemklub', el);
-		console.log(err)
-		return null
+		return true
+	}
+	protected parseItem(el: HTMLElement): Item | null {
+		try {
+			const titleEl = el.querySelector('.prod-name');
+			const normalPriceEl = el.querySelector('.normal-price .price');
+			const details = el.querySelector('.product-icons');
+			const imageEl: HTMLImageElement | null = el.querySelector('.picture-container img');
+			const linkEl: HTMLAnchorElement | null = el.querySelector('.prod-name a');
+			if (titleEl && imageEl && details && normalPriceEl && linkEl) {
+				const priceTextContent = normalPriceEl.textContent || ''
+				return {
+					title: titleEl.textContent || '',
+					language: getLanguage(details),
+					price: {
+						original: parseInt(priceTextContent.replace('&nbsp;', '').replace(' ', ''), 10),
+						discounted: 0
+					},
+					available: getAvailable(details),
+					image: imageEl.src,
+					vendor: Vendor.Gemklub,
+					nextAvailable: getNextAvailable(details),
+					url: linkEl.href
+				}
+			}
+			console.log('Unable to parse item on Gemklub', el);
+			return null
+		} catch (err) {
+			console.log('Unable to parse item on Gemklub', el);
+			console.log(err)
+			return null
+		}
 	}
 }
 
-export default async function scraper(query: string): Promise<Item[]> {
-	try {
-		const response = await fetch(`${server}gemklub/${query}`);
-		const html = await response.text();
-		const el = document.implementation.createHTMLDocument('virtual')
-		el.write(html)
-		const notice = el.querySelector('.note-msg');
-		if (notice) {
-			return [];
-		}
-		const entries = el.querySelectorAll('.category-products .product-item');
-		const parsed = Array.from(entries).map(scrapeItem);
-		return compact(parsed)
-	} catch (err) {
-		console.log(err);
-		return [];
-	}
-}
+const instance = new GemklubScraper()
+export default instance
