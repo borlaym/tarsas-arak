@@ -1,16 +1,19 @@
 import * as React from 'react';
 import styled from 'styled-components';
+import { Vendor } from '../Item';
 
 const Wrapper = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	padding: 0 20px;
+	position: relative;
 `
 
 const Input = styled.input`
 	width: 100%;
 	margin: 20px;
+	margin-left: 0;
 	border: none;
 	padding-bottom: 8px;
 	outline: none;
@@ -44,8 +47,35 @@ const Button = styled.button`
 	font-family: 'Roboto', sans-serif;
 `
 
+const LoadingStatus = styled.div`
+	position: absolute;
+	right: 130px;
+	color: #26a69a;
+	font-family: 'Roboto', sans-serif;
+	font-size: 16px;
+	display: flex;
+	align-items: center;
+
+`
+
+const LoadingSpinner = styled.img`
+	width: 25px;
+	height: 25px;
+	margin-left: 5px;
+`
+
 interface Props {
-	onSearch: (query: string) => void
+	onSearch: (query: string) => void,
+	loading: number
+}
+
+function Loading(props: { current: number, max: number }) {
+	return (
+		<LoadingStatus>
+			{props.max - props.current} / {props.max}
+			<LoadingSpinner src="oval.svg" />
+		</LoadingStatus>
+	)
 }
 
 export default class SearchComponent extends React.Component<Props> {
@@ -92,6 +122,7 @@ export default class SearchComponent extends React.Component<Props> {
 					onKeyPress={this.handleKeyPress}
 					onFocus={this.handleFocus}
 				/>
+				{this.props.loading > 0 && <Loading current={this.props.loading} max={Object.keys(Vendor).length} /> }
 				<Button onClick={this.handleClick}>Kereses</Button>
 			</Wrapper>
 		)

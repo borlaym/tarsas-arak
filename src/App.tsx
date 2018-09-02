@@ -8,6 +8,7 @@ import tarsasjatekdiszkont from './scrapers/tarsasjatekdiszkont';
 import ItemComponent from './components/item-component';
 import Item, { Vendor } from './Item';
 import SearchComponent from './components/search-input';
+import styled from 'styled-components';
 
 const enumToScraper = {
 	Szellemlovas: szellemlovas,
@@ -17,6 +18,11 @@ const enumToScraper = {
 	Deltavision: deltavision,
 	TarsasjatekDiszkont: tarsasjatekdiszkont
 }
+
+const List = styled.ul`
+	margin: 20px 0;
+	padding: 0 20px;
+`
 
 class App extends React.Component {
 	public state = {
@@ -41,11 +47,10 @@ class App extends React.Component {
 	public render() {
 		return (
 			<div>
-				<SearchComponent onSearch={this.startSearch} />
-				{this.state.waitingOn.length > 0 && (<div>
-					Toltes: {this.state.waitingOn.join(', ')}
-				</div>)}
-				{this.state.results.map((item: Item, index: number) => <ItemComponent key={index} {...item} />)}
+				<SearchComponent onSearch={this.startSearch} loading={this.state.waitingOn.length} />
+				<List>
+					{this.state.results.map((item: Item, index: number) => <ItemComponent key={index} {...item} />)}
+				</List>
 			</div>
 		);
 	}

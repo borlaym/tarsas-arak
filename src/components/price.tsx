@@ -31,9 +31,9 @@ const OriginalPrice = styled.span`
 
 function formatPrice(value: number) {
 	if (value < 1000) {
-		return value + 'Ft'
+		return value + ' Ft'
 	}
-	return String(value).slice(0, -3) + ' ' + String(value).slice(-3) + 'Ft'
+	return String(value).slice(0, -3) + ' ' + String(value).slice(-3) + ' Ft'
 }
 
 export default function PriceComponent(props: { original: number, discounted: number }) {
