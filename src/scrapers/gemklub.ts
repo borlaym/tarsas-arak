@@ -1,32 +1,47 @@
-import Item, { Language, Vendor } from "../Item";
+import { Language, Vendor } from "../Item";
 import Scraper from "./Scraper";
 
-function getLanguage(el: Element): Language {
-	if (el.querySelector('img[alt="Magyar nyelvű társasjáték"]')) {
-		return Language.Hungarian
-	} else if (el.querySelector('img[alt="Angol nyelvű társasjáték"]')) {
-		return Language.English
-	}
-	return Language.LanguageIndependent
-}
-
-function getAvailable(el: Element): boolean {
-	const span = el.querySelector('span');
-	if (span && span.title && span.title.indexOf('Azonnal') === 0) {
-		return true
-	}
-	return false
-}
-
-function getNextAvailable(el: Element): string | null {
-	const span = el.querySelector('span');
-	if (span && span.title && span.title.indexOf('Azonnal') === -1 && span.title.indexOf('Előrendelés') === -1) {
-		return span.title
-	}
-	return null
-}
-
 class GemklubScraper extends Scraper {
+	protected getTitle(el: Element): string {
+		return this.getTextContent(this.getChild(el, '.prod-name a'))
+	}
+	protected getLanguage(el: Element): Language {
+		if (el.querySelector('img[alt="Magyar nyelvű társasjáték"]')) {
+			return Language.Hungarian
+		} else if (el.querySelector('img[alt="Angol nyelvű társasjáték"]')) {
+			return Language.English
+		}
+		return Language.LanguageIndependent
+	}
+	protected getPrice(el: Element): { original: number; discounted: number; } {
+		const price = this.getTextContent(this.getChild(el, '.normal-price .price'))
+		return {
+			original: parseInt(price.replace('&nbsp;', '').replace(' ', ''), 10),
+			discounted: 0
+		}
+	}
+	protected getAvailable(el: Element): boolean {
+		const span = this.getChild(el, '.product-icons')
+		if (span.title && span.title.indexOf('Azonnal') === 0) {
+			return true
+		}
+		return false
+	}
+	protected getNextAvailable(el: Element): string | null {
+		const span = this.getChild(el, '.product-icons')
+		if (span.title && span.title.indexOf('Azonnal') === -1 && span.title.indexOf('Előrendelés') === -1) {
+			return span.title
+		}
+		return null
+	}
+	protected getImageSrc(el: Element): string {
+		const image: HTMLImageElement = this.getChild(el, '.picture-container img');
+		return image.src
+	}
+	protected getUrl(el: Element): string {
+		const link: HTMLAnchorElement = this.getChild(el, '.prod-name a')
+		return link.href
+	}
 	public vendor = Vendor.Gemklub;
 	protected itemSelector = '.category-products .product-item';
 	protected shouldParsePage(el: Document) {
@@ -35,37 +50,6 @@ class GemklubScraper extends Scraper {
 			return false;
 		}
 		return true
-	}
-	protected parseItem(el: HTMLElement): Item | null {
-		try {
-			const titleEl = el.querySelector('.prod-name');
-			const normalPriceEl = el.querySelector('.normal-price .price');
-			const details = el.querySelector('.product-icons');
-			const imageEl: HTMLImageElement | null = el.querySelector('.picture-container img');
-			const linkEl: HTMLAnchorElement | null = el.querySelector('.prod-name a');
-			if (titleEl && imageEl && details && normalPriceEl && linkEl) {
-				const priceTextContent = normalPriceEl.textContent || ''
-				return {
-					title: titleEl.textContent || '',
-					language: getLanguage(details),
-					price: {
-						original: parseInt(priceTextContent.replace('&nbsp;', '').replace(' ', ''), 10),
-						discounted: 0
-					},
-					available: getAvailable(details),
-					image: imageEl.src,
-					vendor: Vendor.Gemklub,
-					nextAvailable: getNextAvailable(details),
-					url: linkEl.href
-				}
-			}
-			console.log('Unable to parse item on Gemklub', el);
-			return null
-		} catch (err) {
-			console.log('Unable to parse item on Gemklub', el);
-			console.log(err)
-			return null
-		}
 	}
 }
 
