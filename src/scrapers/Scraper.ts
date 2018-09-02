@@ -12,12 +12,22 @@ abstract class Scraper {
 	 * CSS selector to find a single item
 	 */
 	protected abstract readonly itemSelector: string;
+	protected document: Document;
+	constructor(
+		public readonly query: string
+	) {}
 	/**
 	 * Whether the whole page should be parsed or not.
 	 * For example, gemklub will show you unrelated items if there are no search results
 	 */
 	protected shouldParsePage(el: Document): boolean {
 		return true;
+	}
+	/**
+	 * Some vendors return a different page when there is only one result
+	 */
+	protected get shouldUseSinglePageParse(): boolean {
+		return false
 	}
 	/**
 	 * Various field getters
@@ -32,18 +42,22 @@ abstract class Scraper {
 	/**
 	 * Do a search for items of a query
 	 */
-	public async search(query: string): Promise<Item[]> {
+	public async search(): Promise<Item[]> {
 		try {
-			const response = await fetch(`${SERVER_URL}${this.vendor.toLowerCase()}/${query}`);
+			const response = await fetch(`${SERVER_URL}${this.vendor.toLowerCase()}/${this.query}`);
 			const html = await response.text();
-			const el = document.implementation.createHTMLDocument('virtual')
-			el.write(html)
+			const doc = document.implementation.createHTMLDocument('virtual')
+			doc.write(html)
+			this.document = doc
 			if (this.shouldParsePage) {
-				if (!this.shouldParsePage(el)) {
+				if (!this.shouldParsePage(doc)) {
 					return [];
 				}
 			}
-			const entries = el.querySelectorAll(this.itemSelector);
+			if (this.shouldUseSinglePageParse) {
+				return [this.parseSinglePageItem(doc.body)]
+			}
+			const entries = doc.querySelectorAll(this.itemSelector);
 			const parsed = Array.from(entries).map((entry: HTMLElement) => this.parseItem(entry));
 			return compact(parsed)
 		} catch (err) {
@@ -54,7 +68,7 @@ abstract class Scraper {
 	/**
 	 * Parse a single item
 	 */
-	private parseItem(el: HTMLElement): Item {
+	private parseItem(el: Element): Item {
 		return {
 			vendor: this.vendor,
 			title: this.getTitle(el),
@@ -65,6 +79,12 @@ abstract class Scraper {
 			image: this.getImageSrc(el),
 			url: this.getUrl(el)
 		}
+	}
+	/**
+	 * This is used when the search redirects to a product page instead of search page
+	 */
+	protected parseSinglePageItem(el: Element): Item {
+		return this.parseItem(el)
 	}
 	/**
 	 * Helper for getting an element with standardized error handling

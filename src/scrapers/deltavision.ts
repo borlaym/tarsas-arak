@@ -1,7 +1,7 @@
 import { Language, Vendor } from "../Item";
 import Scraper from "./Scraper";
 
-class DeltaVisionScraper extends Scraper {
+export default class DeltaVisionScraper extends Scraper {
 	protected getTitle(el: Element): string {
 		return this.getTextContent(this.getChild(el, '.product-name a'))
 	}
@@ -33,6 +33,3 @@ class DeltaVisionScraper extends Scraper {
 	public vendor = Vendor.Deltavision;
 	protected itemSelector = '.products-grid .item';
 }
-
-const instance = new DeltaVisionScraper()
-export default instance

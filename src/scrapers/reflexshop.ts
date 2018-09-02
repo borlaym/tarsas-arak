@@ -1,7 +1,7 @@
 import { Language, Vendor } from "../Item";
 import Scraper from "./Scraper";
 
-class ReflexshopScraper extends Scraper {
+export default class ReflexshopScraper extends Scraper {
 	protected getTitle(el: Element): string {
 		return this.getTextContent(this.getChild(el, 'a.list-productname-link'))
 	}
@@ -32,6 +32,3 @@ class ReflexshopScraper extends Scraper {
 	public vendor = Vendor.Reflexshop;
 	protected itemSelector = '.snapshot-list-container .product-snapshot .snapshot_vertical_product'
 }
-
-const instance = new ReflexshopScraper()
-export default instance

@@ -1,7 +1,7 @@
 import { Language, Vendor } from "../Item";
 import Scraper from "./Scraper";
 
-class GemklubScraper extends Scraper {
+export default class GemklubScraper extends Scraper {
 	protected getTitle(el: Element): string {
 		return this.getTextContent(this.getChild(el, '.prod-name a'))
 	}
@@ -52,6 +52,3 @@ class GemklubScraper extends Scraper {
 		return true
 	}
 }
-
-const instance = new GemklubScraper()
-export default instance

@@ -1,7 +1,7 @@
 import { Language, Vendor } from "../Item";
 import Scraper from "./Scraper";
 
-class SzellemlovasScraper extends Scraper {
+export default class SzellemlovasScraper extends Scraper {
 	public vendor = Vendor.Szellemlovas;
 	protected itemSelector = '.items .view';
 	protected getTitle(el: Element): string {
@@ -59,6 +59,3 @@ class SzellemlovasScraper extends Scraper {
 		return link.href.replace(window.location.origin, 'https://www.szellemlovas.hu')
 	}
 }
-
-const instance = new SzellemlovasScraper()
-export default instance

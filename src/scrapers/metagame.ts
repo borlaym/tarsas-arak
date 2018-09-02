@@ -1,7 +1,7 @@
 import { Language, Vendor } from "../Item";
 import Scraper from "./Scraper";
 
-class MetagameScraper extends Scraper {
+export default class MetagameScraper extends Scraper {
 	protected getTitle(el: Element): string {
 		return this.getTextContent(this.getChild(el, '.webshop-list-item-name a'))
 	}
@@ -47,6 +47,3 @@ class MetagameScraper extends Scraper {
 	public vendor = Vendor.Metagame;
 	protected itemSelector = '.webshop-products-panel .card.webshop-list-item';
 }
-
-const instance = new MetagameScraper()
-export default instance

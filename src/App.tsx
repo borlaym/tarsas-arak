@@ -30,8 +30,8 @@ class App extends React.Component {
 			results: []
 		}, () => {
 			Object.keys(Vendor).map((vendor: string) => {
-				const scraper = enumToScraper[vendor]
-				scraper.search(query).then((items: Item[]) => this.setState({
+				const scraper = new enumToScraper[vendor](query)
+				scraper.search().then((items: Item[]) => this.setState({
 					results: [...this.state.results, ...items],
 					waitingOn: this.state.waitingOn.filter(v => v !== vendor)
 				}))
