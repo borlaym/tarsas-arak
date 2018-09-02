@@ -44,6 +44,12 @@ export default class TarsasjatekDiszkontScraper extends Scraper {
 	protected get shouldUseSinglePageParse() {
 		return !this.document.querySelector('#page_search_content')
 	}
+	protected shouldParsePage(el: Document): boolean {
+		if (el.querySelector('form[name="form_searchcomplex"]')) {
+			return false
+		}
+		return true
+	}
 	public vendor = Vendor.TarsasjatekDiszkont;
 	protected itemSelector = '#page_search_content .page_artlist_item_2';
 }
