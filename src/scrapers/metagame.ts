@@ -1,66 +1,51 @@
-import Item, { Language, Vendor } from "../Item";
+import { Language, Vendor } from "../Item";
 import Scraper from "./Scraper";
 
-function getPrice(el: Element): { original: number, discounted: number } {
-	const normalPriceEl = el.querySelector('.saleDetails span');
-	const discountPriceEl = el.querySelector('.sale');
-	if (normalPriceEl && discountPriceEl) {
+class MetagameScraper extends Scraper {
+	protected getTitle(el: Element): string {
+		return this.getTextContent(this.getChild(el, '.webshop-list-item-name a'))
+	}
+	protected getLanguage(el: Element): Language {
+		return Language.LanguageIndependent
+	}
+	protected getPrice(el: Element): { original: number; discounted: number; } {
+		const normalPriceEl = this.getChild(el, '.saleDetails span');
+		const discountPriceEl = this.getChild(el, '.sale');
+		if (normalPriceEl && discountPriceEl) {
+			return {
+				original: parseInt(this.getTextContent(normalPriceEl).replace('.', '').replace(' ', ''), 10),
+				discounted: parseInt(this.getTextContent(discountPriceEl).replace('.', '').replace(' ', ''), 10)
+			}
+		}
 		return {
-			original: parseInt((normalPriceEl.textContent || '').replace('.', '').replace(' ', ''), 10),
-			discounted: parseInt((discountPriceEl.textContent || '').replace('.', '').replace(' ', ''), 10)
+			original: parseInt((el.textContent || '').replace('.', '').replace(' ', ''), 10),
+			discounted: 0
 		}
 	}
-	return {
-		original: parseInt((el.textContent || '').replace('.', '').replace(' ', ''), 10),
-		discounted: 0
+	protected getAvailable(el: Element): boolean {
+		const text = this.getTextContent(this.getChild(el, 'h5 + div'))
+		if (text.indexOf('Készleten') > -1 && text.indexOf('Nincs Készleten') === -1) {
+			return true;
+		}
+		return false
 	}
-}
-
-function getAvailable(el: Element): boolean {
-	const text = el.textContent || ''
-	if (text.indexOf('Készleten') > -1 && text.indexOf('Nincs Készleten') === -1) {
-		return true;
+	protected getNextAvailable(el: Element): string | null {
+		const text = this.getTextContent(this.getChild(el, 'h5 + div'))
+		if (text.indexOf('Előrendelhető') > -1) {
+			return text;
+		}
+		return null
 	}
-	return false
-}
-
-function getNextAvailable(el: Element): string | null {
-	const text = el.textContent || ''
-	if (text.indexOf('Előrendelhető') > -1) {
-		return text;
+	protected getImageSrc(el: Element): string {
+		const image: HTMLImageElement = this.getChild(el, '.thumbnail img');
+		return image.src
 	}
-	return null
-}
-
-class MetagameScraper extends Scraper {
+	protected getUrl(el: Element): string {
+		const link: HTMLAnchorElement = this.getChild(el, '.webshop-list-item-name a')
+		return link.href
+	}
 	public vendor = Vendor.Metagame;
 	protected itemSelector = '.webshop-products-panel .card.webshop-list-item';
-	protected parseItem(el: HTMLElement): Item | null {
-		try {
-			const titleEl: HTMLAnchorElement | null = el.querySelector('.webshop-list-item-name a');
-			const priceEl = el.querySelector('h5');
-			const imageEl: HTMLImageElement | null = el.querySelector('.thumbnail img');
-			const availability = el.querySelector('h5 + div');
-			if (titleEl && imageEl && priceEl && availability) {
-				return {
-					title: titleEl.textContent || '',
-					language: Language.LanguageIndependent,
-					price: getPrice(priceEl),
-					available: getAvailable(availability),
-					image: imageEl.src.replace(window.location.href, 'https://www.metagames.hu/'),
-					vendor: Vendor.Metagame,
-					nextAvailable: getNextAvailable(availability),
-					url: titleEl.href.replace(window.location.href, 'https://www.metagames.hu/')
-				}
-			}
-			console.log('Unable to parse item on Metagame', el);
-			return null
-		} catch (err) {
-			console.log('Unable to parse item on Metagame', el);
-			console.log(err)
-			return null
-		}
-	}
 }
 
 const instance = new MetagameScraper()

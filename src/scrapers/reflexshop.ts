@@ -1,38 +1,36 @@
-import Item, { Language, Vendor } from "../Item";
+import { Language, Vendor } from "../Item";
 import Scraper from "./Scraper";
 
 class ReflexshopScraper extends Scraper {
-	public vendor = Vendor.Reflexshop;
-	protected itemSelector = '.snapshot-list-container .product-snapshot .snapshot_vertical_product'
-	protected parseItem(el: HTMLElement): Item | null {
-		try {
-			const titleEl: HTMLAnchorElement | null = el.querySelector('a.list-productname-link');
-			const normalPriceEl = el.querySelector('.list_price');
-			const imageEl: HTMLImageElement | null = el.querySelector('.img-thumbnail-link img');
-			if (titleEl && imageEl && normalPriceEl) {
-				const priceTextContent = normalPriceEl.textContent || ''
-				return {
-					title: titleEl.textContent || '',
-					language: Language.LanguageIndependent,
-					price: {
-						original: parseInt(priceTextContent.replace('.', '').replace(' ', ''), 10),
-						discounted: 0
-					},
-					available: true,
-					image: imageEl.dataset && imageEl.dataset.src || '',
-					vendor: Vendor.Reflexshop,
-					nextAvailable: null,
-					url: titleEl.href
-				}
-			}
-			console.log('Unable to parse item on Reflexshop', el);
-			return null
-		} catch (err) {
-			console.log('Unable to parse item on Reflexshop', el);
-			console.log(err)
-			return null
+	protected getTitle(el: Element): string {
+		return this.getTextContent(this.getChild(el, 'a.list-productname-link'))
+	}
+	protected getLanguage(el: Element): Language {
+		return Language.LanguageIndependent
+	}
+	protected getPrice(el: Element): { original: number; discounted: number; } {
+		const priceText = this.getTextContent(this.getChild(el, '.list_price'))
+		return {
+			original: parseInt(priceText.replace('.', '').replace(' ', ''), 10),
+			discounted: 0
 		}
 	}
+	protected getAvailable(el: Element): boolean {
+		return true
+	}
+	protected getNextAvailable(el: Element): string | null {
+		return null
+	}
+	protected getImageSrc(el: Element): string {
+		const image: HTMLImageElement = this.getChild(el, '.img-thumbnail-link img')
+		return image.dataset && image.dataset.src || ''
+	}
+	protected getUrl(el: Element): string {
+		const link: HTMLAnchorElement = this.getChild(el, 'a.list-productname-link')
+		return link.href
+	}
+	public vendor = Vendor.Reflexshop;
+	protected itemSelector = '.snapshot-list-container .product-snapshot .snapshot_vertical_product'
 }
 
 const instance = new ReflexshopScraper()
