@@ -3,6 +3,7 @@ import szellemlovas from './scrapers/szellemlovas';
 import gemklub from './scrapers/gemklub';
 import reflexshop from './scrapers/reflexshop';
 import metagame from './scrapers/metagame';
+import deltavision from './scrapers/deltavision';
 import ItemComponent from './components/item-component';
 import Item, { Vendor } from './Item';
 import SearchComponent from './components/search-input';
@@ -11,7 +12,8 @@ const enumToParser = {
 	Szellemlovas: szellemlovas,
 	Gemklub: gemklub,
 	Reflexshop: reflexshop,
-	Metagame: metagame
+	Metagame: metagame,
+	Deltavision: deltavision
 }
 
 class App extends React.Component {

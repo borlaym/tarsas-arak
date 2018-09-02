@@ -23,7 +23,8 @@ function getVendorSrc(vendor: Vendor): string {
 			return 'https://scontent.fbud4-1.fna.fbcdn.net/v/t1.0-1/p480x480/23843194_1847318291948239_2029021217526980624_n.jpg?_nc_cat=0&oh=8fea075c15843aa814b59fbb77b28d15&oe=5BF14B1E'
 		case Vendor.Reflexshop:
 			return 'https://scontent.fbud4-1.fna.fbcdn.net/v/t1.0-1/23244435_1971198423146349_3183030814318886329_n.jpg?_nc_cat=0&oh=cf0f3d00df30506c3b3bc6479899e6d9&oe=5BF93D0C'
-
+		case Vendor.Deltavision:
+			return 'https://a-games.hu/images/DeltaVision.png'
 	}
 }
 

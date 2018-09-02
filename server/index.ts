@@ -27,5 +27,10 @@ app.get('/metagame/:query', (req, res) => {
 		.then(r => r.text())
 		.then(r => res.send(r));
 })
+app.get('/deltavision/:query', (req, res) => {
+	fetch(`http://www.deltavision.hu/catalogsearch/result/?q=${req.params.query}`)
+		.then(r => r.text())
+		.then(r => res.send(r));
+})
 const port = process.env.PORT || 3001
 app.listen(port, () => console.log('listening on ' + port));
