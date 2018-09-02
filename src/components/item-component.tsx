@@ -17,10 +17,21 @@ const Wrapper = styled.li`
 	border-bottom: 1px solid #e0e0e0;
 	list-style-type: none;
 	justify-content: space-between;
+
+	@media only screen and (max-width: 600px) {
+   		display: block;
+	}
 `
 
-const FlexSlot = styled.div`
+const ImageAndTitle = styled.div`
 	display: flex;
+`
+
+const PriceAndVendor = styled.div`
+	display: flex;
+	@media only screen and (max-width: 600px) {
+   		justify-content: space-between;
+	}
 `
 
 const ImageContainer = styled.div`
@@ -62,7 +73,7 @@ function getStatus(item: Item) {
 const ItemComponent = (item: Item) => {
 	return (
 		<Wrapper>
-			<FlexSlot>
+			<ImageAndTitle>
 				<ImageContainer>
 					<Image src={item.image} />
 					<LanguageComponent language={item.language} />
@@ -73,11 +84,11 @@ const ItemComponent = (item: Item) => {
 						{getStatus(item)}
 					</a>
 				</TitleBox>
-			</FlexSlot>
-			<FlexSlot>
+			</ImageAndTitle>
+			<PriceAndVendor>
 				<PriceComponent {...item.price} />
 				<VendorComponent vendor={item.vendor} />
-			</FlexSlot>
+			</PriceAndVendor>
 		</Wrapper>
 	)
 }

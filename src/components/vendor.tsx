@@ -3,6 +3,7 @@ import { Vendor } from '../Item';
 import styled from 'styled-components';
 
 const VENDOR_IMAGE_HEIGHT = 80;
+const VENDOR_MOBILE_IMAGE_HEIGHT = 40;
 
 const Wrapper = styled.div`
 	width: ${VENDOR_IMAGE_HEIGHT}px;
@@ -11,11 +12,20 @@ const Wrapper = styled.div`
 	justify-content: center;
 	align-items: center;
 	position: relative;
+
+	@media only screen and (max-width: 600px) {
+   		width: ${VENDOR_MOBILE_IMAGE_HEIGHT}px;
+	}
 `
 
 const VendorImage = styled.img`
 	max-height: ${VENDOR_IMAGE_HEIGHT}px;
 	max-width: ${VENDOR_IMAGE_HEIGHT}px;
+
+	@media only screen and (max-width: 600px) {
+   		max-height: ${VENDOR_MOBILE_IMAGE_HEIGHT}px;
+		max-width: ${VENDOR_MOBILE_IMAGE_HEIGHT}px;
+	}
 `
 
 function getVendorSrc(vendor: Vendor): string {

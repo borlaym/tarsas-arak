@@ -7,6 +7,10 @@ const Wrapper = styled.div`
 	align-items: center;
 	padding: 0 20px;
 	flex-direction: column;
+
+	@media only screen and (max-width: 600px) {
+   		padding: 0;
+	}
 `
 
 const FinalPrice = styled.span`
@@ -16,6 +20,10 @@ const FinalPrice = styled.span`
 	color: rgba(0,0,0,0.87);
     line-height: 1.6;
     font-size: 24px;
+
+	@media only screen and (max-width: 600px) {
+   		text-align: left;
+	}
 `
 
 const OriginalPrice = styled.span`
@@ -27,6 +35,10 @@ const OriginalPrice = styled.span`
 	color: rgba(0,0,0,0.57);
     line-height: 1.6;
     font-size: 16px;
+
+	@media only screen and (max-width: 600px) {
+   		text-align: left;
+	}
 `
 
 function formatPrice(value: number) {
