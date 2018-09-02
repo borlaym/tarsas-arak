@@ -24,7 +24,7 @@ class TarsasjatekDiszkontScraper extends Scraper {
 	}
 	protected getImageSrc(el: Element): string {
 		const image: HTMLImageElement = this.getChild(el, '.page_artlist_pic_2 img')
-		return image.dataset && image.dataset.src || ''
+		return image.src
 	}
 	protected getUrl(el: Element): string {
 		const link: HTMLAnchorElement = this.getChild(el, 'a.page_artlist_name_link')

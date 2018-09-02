@@ -21,7 +21,7 @@ class GemklubScraper extends Scraper {
 		}
 	}
 	protected getAvailable(el: Element): boolean {
-		const span = this.getChild(el, '.product-icons')
+		const span = this.getChild(el, '.product-icons span')
 		if (span.title && span.title.indexOf('Azonnal') === 0) {
 			return true
 		}
