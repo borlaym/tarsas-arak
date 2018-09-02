@@ -9,7 +9,8 @@ export enum Vendor {
 	Gemklub = 'Gemklub',
 	Metagame = 'Metagame',
 	Reflexshop = 'Reflexshop',
-	Deltavision = 'Deltavision'
+	Deltavision = 'Deltavision',
+	TarsasjatekDiszkont = 'TarsasjatekDiszkont'
 }
 
 interface Item {

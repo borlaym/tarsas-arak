@@ -32,5 +32,10 @@ app.get('/deltavision/:query', (req, res) => {
 		.then(r => r.text())
 		.then(r => res.send(r));
 })
+app.get('/tarsasjatekdiszkont/:query', (req, res) => {
+	fetch(`https://www.tarsasjatekdiszkont.hu/shop_search.php?search=${req.params.query}`)
+		.then(r => r.text())
+		.then(r => res.send(r));
+})
 const port = process.env.PORT || 3001
 app.listen(port, () => console.log('listening on ' + port));

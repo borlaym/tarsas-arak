@@ -7,7 +7,6 @@ function getPrice(el: Element): { original: number, discounted: number} {
 	const oldPrice = el.querySelector('.old-price')
 	const specialPrice = el.querySelector('.special-price')
 	if (oldPrice && specialPrice) {
-		console.log((oldPrice.textContent || '').replace(/([a-zA-Záé:])+/g, ''))
 		return {
 			original: parseInt((oldPrice.textContent || '').replace(/([a-zA-Záé:])+/g, ''), 10),
 			discounted: parseInt((specialPrice.textContent || '').replace(/([a-zA-Záé:])+/g, ''), 10)

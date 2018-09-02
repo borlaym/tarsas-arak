@@ -25,6 +25,8 @@ function getVendorSrc(vendor: Vendor): string {
 			return 'https://scontent.fbud4-1.fna.fbcdn.net/v/t1.0-1/23244435_1971198423146349_3183030814318886329_n.jpg?_nc_cat=0&oh=cf0f3d00df30506c3b3bc6479899e6d9&oe=5BF93D0C'
 		case Vendor.Deltavision:
 			return 'https://a-games.hu/images/DeltaVision.png'
+		case Vendor.TarsasjatekDiszkont:
+			return 'https://www.tarsasjatekdiszkont.hu/shop_pic.php?time=1504434319&width=270&height=100&design_element=head_slide_0.png'
 	}
 }
 
