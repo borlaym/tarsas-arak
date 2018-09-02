@@ -7,6 +7,7 @@ const Wrapper = styled.div`
 	justify-content: center;
 	align-items: center;
 	padding: 0 20px;
+	align-self: flex-end;
 `
 
 const VendorImage = styled.img`
