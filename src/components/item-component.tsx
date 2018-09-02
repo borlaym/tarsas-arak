@@ -16,6 +16,11 @@ const Wrapper = styled.li`
 	background-color: white;
 	border-bottom: 1px solid #e0e0e0;
 	list-style-type: none;
+	justify-content: space-between;
+`
+
+const FlexSlot = styled.div`
+	display: flex;
 `
 
 const ImageContainer = styled.div`
@@ -24,6 +29,7 @@ const ImageContainer = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	position: relative;
 `
 
 const Image = styled.img`
@@ -56,19 +62,22 @@ function getStatus(item: Item) {
 const ItemComponent = (item: Item) => {
 	return (
 		<Wrapper>
-			<ImageContainer>
-				<Image src={item.image} />
-			</ImageContainer>
-			<TitleBox>
-				<a href={item.url}>
-					{item.title}<br />
-					{getStatus(item)}
-				</a>
-			</TitleBox>
-			<PriceComponent {...item.price} />
-			<LanguageComponent language={item.language} />
-			<TitleBox>{item.nextAvailable}</TitleBox>
-			<VendorComponent vendor={item.vendor} />
+			<FlexSlot>
+				<ImageContainer>
+					<Image src={item.image} />
+					<LanguageComponent language={item.language} />
+				</ImageContainer>
+				<TitleBox>
+					<a href={item.url}>
+						{item.title}<br />
+						{getStatus(item)}
+					</a>
+				</TitleBox>
+			</FlexSlot>
+			<FlexSlot>
+				<PriceComponent {...item.price} />
+				<VendorComponent vendor={item.vendor} />
+			</FlexSlot>
 		</Wrapper>
 	)
 }

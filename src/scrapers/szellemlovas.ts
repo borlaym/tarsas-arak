@@ -10,7 +10,7 @@ export default class SzellemlovasScraper extends Scraper {
 	protected getLanguage(el: Element): Language {
 		const text = this.getTextContent(this.getChild(el, '#list_3h'))
 		// TODO nyelvfuggetlen
-		return text.indexOf('Magyar nyelvű') > -1 ? Language.Hungarian : Language.English;
+		return text.indexOf('Magyar') > -1 ? Language.Hungarian : Language.English;
 	}
 	protected getPrice(el: Element): { original: number; discounted: number; } {
 		const normalPriceEl = el.querySelector('.normalprice');

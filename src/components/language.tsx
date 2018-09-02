@@ -3,10 +3,15 @@ import styled from 'styled-components';
 import { Language } from '../Item';
 
 const Wrapper = styled.div`
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	padding: 0 20px;
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	line-height: 1;
+
+	img {
+		line-height: 1;
+		display: block;
+	}
 `
 
 function getFlagSrc(language: Language): string | null {

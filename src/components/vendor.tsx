@@ -2,16 +2,20 @@ import * as React from 'react';
 import { Vendor } from '../Item';
 import styled from 'styled-components';
 
+const VENDOR_IMAGE_HEIGHT = 80;
+
 const Wrapper = styled.div`
+	width: ${VENDOR_IMAGE_HEIGHT}px;
+	margin-left: 20px;
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	padding: 0 20px;
-	align-self: flex-end;
+	position: relative;
 `
 
 const VendorImage = styled.img`
-	max-height: 70px;
+	max-height: ${VENDOR_IMAGE_HEIGHT}px;
+	max-width: ${VENDOR_IMAGE_HEIGHT}px;
 `
 
 function getVendorSrc(vendor: Vendor): string {
