@@ -44,7 +44,7 @@ abstract class Scraper {
 				}
 			}
 			const entries = el.querySelectorAll(this.itemSelector);
-			const parsed = Array.from(entries).map(this.parseItem);
+			const parsed = Array.from(entries).map((entry: HTMLElement) => this.parseItem(entry));
 			return compact(parsed)
 		} catch (err) {
 			console.log(err);

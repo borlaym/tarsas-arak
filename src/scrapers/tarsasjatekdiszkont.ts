@@ -1,4 +1,4 @@
-import Item, { Language, Vendor } from "../Item";
+import { Language, Vendor } from "../Item";
 import Scraper from "./Scraper";
 
 class TarsasjatekDiszkontScraper extends Scraper {

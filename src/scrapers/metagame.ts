@@ -38,11 +38,11 @@ class MetagameScraper extends Scraper {
 	}
 	protected getImageSrc(el: Element): string {
 		const image: HTMLImageElement = this.getChild(el, '.thumbnail img');
-		return image.src
+		return image.src.replace(window.location.href, 'https://www.metagames.hu/')
 	}
 	protected getUrl(el: Element): string {
 		const link: HTMLAnchorElement = this.getChild(el, '.webshop-list-item-name a')
-		return link.href
+		return link.href.replace(window.location.href, 'https://www.metagames.hu/')
 	}
 	public vendor = Vendor.Metagame;
 	protected itemSelector = '.webshop-products-panel .card.webshop-list-item';
