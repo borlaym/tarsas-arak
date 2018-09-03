@@ -45,11 +45,13 @@ class App extends React.Component {
 		})
 	}
 	public render() {
+		const getFinalPrice = (item: Item) => item.price.discounted > 0 ? item.price.discounted : item.price.original
+		const itemsOrdered = this.state.results.sort((a: Item, b: Item) => getFinalPrice(b) - getFinalPrice(a))
 		return (
 			<div>
 				<SearchComponent onSearch={this.startSearch} loading={this.state.waitingOn.length} />
 				<List>
-					{this.state.results.map((item: Item, index: number) => <ItemComponent key={index} {...item} />)}
+					{itemsOrdered.map((item: Item, index: number) => <ItemComponent key={item.url} {...item} />)}
 				</List>
 			</div>
 		);
