@@ -24,23 +24,37 @@ const List = styled.ul`
 	padding: 0 20px;
 `
 
-class App extends React.Component {
+interface State {
+	results: Item[],
+	waitingOn: string[],
+	currentQuery: string
+}
+
+class App extends React.Component<{}, State> {
 	public state = {
 		results: [],
-		waitingOn: []
+		waitingOn: [],
+		currentQuery: ''
 	}
 
 	public startSearch = (query: string) => {
 		this.setState({
 			waitingOn: Object.keys(Vendor),
-			results: []
+			results: [],
+			currentQuery: query
 		}, () => {
 			Object.keys(Vendor).map((vendor: string) => {
 				const scraper = new enumToScraper[vendor](query)
-				scraper.search().then((items: Item[]) => this.setState({
-					results: [...this.state.results, ...items],
-					waitingOn: this.state.waitingOn.filter(v => v !== vendor)
-				}))
+				scraper.search().then((items: Item[]) => {
+					// If there was a new search started, throw away the results
+					if (this.state.currentQuery !== query) {
+						return;
+					}
+					this.setState({
+						results: [...this.state.results, ...items],
+						waitingOn: this.state.waitingOn.filter(v => v !== vendor)
+					})
+				})
 			})
 		})
 	}
