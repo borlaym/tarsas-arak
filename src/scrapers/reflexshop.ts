@@ -15,8 +15,8 @@ export default class ReflexshopScraper extends Scraper {
 			discounted: 0
 		}
 	}
-	protected getAvailable(el: Element): boolean {
-		return true
+	protected getAvailable(el: Element): boolean | null {
+		return null
 	}
 	protected getNextAvailable(el: Element): string | null {
 		return null

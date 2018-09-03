@@ -21,7 +21,7 @@ interface Item {
 		original: number,
 		discounted: number
 	},
-	available: boolean,
+	available: boolean | null,
 	nextAvailable: string | null,
 	image: string,
 	url: string

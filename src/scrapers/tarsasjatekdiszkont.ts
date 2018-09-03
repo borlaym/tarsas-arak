@@ -21,9 +21,9 @@ export default class TarsasjatekDiszkontScraper extends Scraper {
 			discounted: parseInt(specialPrice.replace(/([a-zA-Záéó:\s])+/g, ''), 10)
 		}
 	}
-	protected getAvailable(el: Element): boolean {
+	protected getAvailable(el: Element): boolean | null {
 		// TODO: single pagenel meg tudjuk mondani
-		return true
+		return null
 	}
 	protected getNextAvailable(el: Element): string | null {
 		return null

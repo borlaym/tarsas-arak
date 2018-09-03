@@ -35,7 +35,7 @@ abstract class Scraper {
 	protected abstract getTitle(el: Element): string;
 	protected abstract getLanguage(el: Element): Language;
 	protected abstract getPrice(el: Element): { original: number, discounted: number };
-	protected abstract getAvailable(el: Element): boolean;
+	protected abstract getAvailable(el: Element): boolean | null;
 	protected abstract getNextAvailable(el: Element): string | null;
 	protected abstract getImageSrc(el: Element): string;
 	protected abstract getUrl(el: Element): string;

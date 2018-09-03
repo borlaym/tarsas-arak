@@ -16,8 +16,8 @@ export default class DeltaVisionScraper extends Scraper {
 			discounted: parseInt(specialPrice.replace(/([a-zA-Záé:])+/g, ''), 10)
 		}
 	}
-	protected getAvailable(el: Element): boolean {
-		return true
+	protected getAvailable(el: Element): boolean | null {
+		return null
 	}
 	protected getNextAvailable(el: Element): string | null {
 		return null

@@ -62,7 +62,7 @@ const TitleBox = styled.div`
 `
 
 const StatusString = styled.span`
-	color: ${(props: { available: boolean }) => props.available ? '#4db6ac' : '#ee6e73'};
+	color: ${(props: { available: boolean | null }) => props.available ? '#4db6ac' : '#ee6e73'};
 `
 
 function getStatus(item: Item) {
@@ -81,7 +81,7 @@ const ItemComponent = (item: Item) => {
 				<TitleBox>
 					<a href={item.url}>
 						{item.title}<br />
-						{getStatus(item)}
+						{item.available !== null && getStatus(item)}
 					</a>
 				</TitleBox>
 			</ImageAndTitle>
